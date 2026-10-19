@@ -81,14 +81,16 @@ private fun CalcifyRoot() {
     Scaffold(
         containerColor = Background,
         bottomBar = {
-            NavigationBar(containerColor = SurfaceDark) {
-                listOf(AppDestination.Home, AppDestination.Progress, AppDestination.History).forEach { item ->
-                    NavigationBarItem(
-                        selected = destination == item,
-                        onClick = { destination = item },
-                        icon = {},
-                        label = { Text(item.label) }
-                    )
+            if (destination != AppDestination.Training) {
+                NavigationBar(containerColor = SurfaceDark) {
+                    listOf(AppDestination.Home, AppDestination.Progress, AppDestination.History).forEach { item ->
+                        NavigationBarItem(
+                            selected = destination == item,
+                            onClick = { destination = item },
+                            icon = {},
+                            label = { Text(item.label) }
+                        )
+                    }
                 }
             }
         }
@@ -96,6 +98,7 @@ private fun CalcifyRoot() {
         when (destination) {
             AppDestination.Home -> HomeScreen(
                 modifier = Modifier.padding(innerPadding),
+                selectedMode = selectedMode,
                 onStartTraining = { destination = AppDestination.Training },
                 onModeSelected = { selectedMode = it }
             )
@@ -125,10 +128,11 @@ private fun CalcifyRoot() {
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
+    selectedMode: String,
     onStartTraining: () -> Unit,
     onModeSelected: (String) -> Unit
 ) {
-    var selectedMode by remember { mutableStateOf("Fast Arithmetic") }
+    val selectedModeAvailable = selectedMode == "Fast Arithmetic" || selectedMode == "Division Mastery"
 
     LazyColumn(
         modifier = modifier
@@ -171,11 +175,16 @@ private fun HomeScreen(
         item {
             Button(
                 onClick = onStartTraining,
+                enabled = selectedModeAvailable,
                 modifier = Modifier.fillMaxWidth().height(54.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Accent, contentColor = Color(0xFF10211F))
             ) {
-                Text("Start $selectedMode", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(
+                    if (selectedModeAvailable) "Start $selectedMode" else "$selectedMode coming soon",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
             }
         }
         item {
