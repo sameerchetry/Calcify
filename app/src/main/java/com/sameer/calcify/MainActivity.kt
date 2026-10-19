@@ -304,7 +304,7 @@ private fun TrainingScreen(
     val isSprint = mode == "Calculation Sprint"
 
     fun saveSessionOnce() {
-        if (sessionSaved || outcomes.isEmpty()) return
+        if (sessionSaved) return
         sessionSaved = true
         val elapsedSeconds = ((System.currentTimeMillis() - startedAt) / 1000L).toInt()
         val session = TrainingSessionEntity(
