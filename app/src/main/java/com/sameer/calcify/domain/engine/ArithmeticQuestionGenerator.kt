@@ -7,7 +7,7 @@ import java.math.RoundingMode
 import kotlin.random.Random
 
 /**
- * Generates basic integer questions and decimal-division practice.
+ * Generates basic integer questions, decimal division, and mixed-operation questions.
  * This class has no Android dependencies so it can be unit-tested.
  */
 class ArithmeticQuestionGenerator(
@@ -50,10 +50,6 @@ class ArithmeticQuestionGenerator(
         return ArithmeticQuestion(first, second, operation, answer)
     }
 
-    /**
-     * Creates division questions whose correct response is rounded to two decimal places.
-     * The exact quotient is retained internally and rounded only for answer checking/display.
-     */
     fun generateDivisionQuestion(): ArithmeticQuestion {
         val divisor = random.nextInt(2, 10)
         val dividend = random.nextInt(10, 100)
@@ -66,6 +62,53 @@ class ArithmeticQuestionGenerator(
             operation = ArithmeticOperation.DIVIDE,
             answer = exactAnswer,
             acceptedDecimalPlaces = 2
+        )
+    }
+
+    /**
+     * Generates BODMAS questions with a known integer answer. Multiplication is
+     * deliberately mixed with addition/subtraction and parentheses to practise order.
+     */
+    fun generateMixedQuestion(): ArithmeticQuestion {
+        val template = random.nextInt(0, 4)
+        val a = random.nextInt(4, 21)
+        val b = random.nextInt(2, 13)
+        val c = random.nextInt(2, 10)
+        val d = random.nextInt(1, 16)
+
+        val expression: String
+        val answer: Int
+        val operation: ArithmeticOperation
+
+        when (template) {
+            0 -> {
+                expression = "$a + $b × $c"
+                answer = a + b * c
+                operation = ArithmeticOperation.ADD
+            }
+            1 -> {
+                expression = "($a + $b) × $c"
+                answer = (a + b) * c
+                operation = ArithmeticOperation.MULTIPLY
+            }
+            2 -> {
+                expression = "$a × $b − $c"
+                answer = a * b - c
+                operation = ArithmeticOperation.MULTIPLY
+            }
+            else -> {
+                expression = "$a + $b − $d"
+                answer = a + b - d
+                operation = ArithmeticOperation.ADD
+            }
+        }
+
+        return ArithmeticQuestion(
+            first = a,
+            second = b,
+            operation = operation,
+            answer = BigDecimal.valueOf(answer.toLong()),
+            expressionOverride = expression
         )
     }
 }
