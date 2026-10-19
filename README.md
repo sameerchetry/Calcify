@@ -8,7 +8,7 @@ The goal is not simply to solve more questions. It is to help users calculate fa
 
 Calcify will combine focused arithmetic practice, timed challenges, adaptive difficulty, performance analysis, and persistent session history in a clean, distraction-free interface.
 
-> **Project status:** Architecture and initial design specification finalized. Implementation is planned as a sequence of small, independently testable milestones.
+> **Project status:** Initial repository scaffold and first Kotlin implementation have been added. The Compose dashboard, basic integer-question generator, scoring rules, and starter unit tests are present. The app has not yet been built or tested in Android Studio; later modes, session gameplay, persistence, timers, and adaptive practice remain planned.
 
 ---
 
