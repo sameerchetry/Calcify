@@ -327,13 +327,12 @@ private fun TrainingScreen(
         saveSessionOnce()
     }
 
-    LaunchedEffect(mode) {
-        if (isSprint) {
-            while (remainingSeconds > 0 && !finished) {
-                delay(1000)
-                if (!finished) remainingSeconds = (remainingSeconds - 1).coerceAtLeast(0)
-            }
-            if (remainingSeconds == 0 && !finished) finishSession()
+    LaunchedEffect(isSprint, remainingSeconds, finished) {
+        if (isSprint && remainingSeconds > 0 && !finished) {
+            delay(1000)
+            if (!finished) remainingSeconds = (remainingSeconds - 1).coerceAtLeast(0)
+        } else if (isSprint && remainingSeconds == 0 && !finished) {
+            finishSession()
         }
     }
 
