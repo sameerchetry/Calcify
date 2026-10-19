@@ -15,10 +15,11 @@ data class ArithmeticQuestion(
     val second: Int,
     val operation: ArithmeticOperation,
     val answer: BigDecimal,
-    val acceptedDecimalPlaces: Int = 0
+    val acceptedDecimalPlaces: Int = 0,
+    val expressionOverride: String? = null
 ) {
     val expression: String
-        get() = "$first ${operation.symbol} $second"
+        get() = expressionOverride ?: "$first ${operation.symbol} $second"
 
     val formattedAnswer: String
         get() = answer.setScale(acceptedDecimalPlaces, RoundingMode.HALF_UP)
