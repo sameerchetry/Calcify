@@ -192,26 +192,22 @@ private fun HomeScreen(
         }
         item {
             ModeCard("Fast Arithmetic", "Addition, subtraction, multiplication, and division.", "MIXED", selectedMode == "Fast Arithmetic") {
-                selectedMode = "Fast Arithmetic"
-                onModeSelected(selectedMode)
+                onModeSelected("Fast Arithmetic")
             }
         }
         item {
             ModeCard("Division Mastery", "Practise quotients rounded to two decimal places.", "DECIMALS", selectedMode == "Division Mastery") {
-                selectedMode = "Division Mastery"
-                onModeSelected(selectedMode)
+                onModeSelected("Division Mastery")
             }
         }
         item {
             ModeCard("Mixed Calculations", "Combined operations and BODMAS are planned next.", "COMING NEXT", selectedMode == "Mixed Calculations") {
-                selectedMode = "Mixed Calculations"
-                onModeSelected(selectedMode)
+                onModeSelected("Mixed Calculations")
             }
         }
         item {
             ModeCard("Calculation Sprint", "Timed challenges are planned for a later milestone.", "COMING NEXT", selectedMode == "Calculation Sprint") {
-                selectedMode = "Calculation Sprint"
-                onModeSelected(selectedMode)
+                onModeSelected("Calculation Sprint")
             }
         }
         item {
