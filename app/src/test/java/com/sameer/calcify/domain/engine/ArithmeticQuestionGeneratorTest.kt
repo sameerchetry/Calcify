@@ -38,4 +38,17 @@ class ArithmeticQuestionGeneratorTest {
             assertTrue(question.first in 10..99)
         }
     }
+    @Test
+    fun mixedQuestionsProvideCombinedExpressionsAndIntegerAnswers() {
+        val generator = ArithmeticQuestionGenerator(Random(19))
+
+        repeat(300) {
+            val question = generator.generateMixedQuestion()
+            assertTrue(question.expression.isNotBlank())
+            assertTrue(question.expression.contains("×") || question.expression.contains("−") || question.expression.contains("+"))
+            assertEquals(0, question.answer.stripTrailingZeros().scale().coerceAtLeast(0))
+            assertTrue(AnswerChecker.isCorrect(question.formattedAnswer, question))
+        }
+    }
+
 }
