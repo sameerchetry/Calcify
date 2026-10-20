@@ -1,0 +1,65 @@
+name: Build Calcify APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag"
+        required: true
+        default: "v1.0.0"
+      release_name:
+        description: "Release title"
+        required: true
+        default: "Calcify v1.0.0"
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.13"
+
+      - name: Build debug APK
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Calcify-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag_name }}
+          name: ${{ inputs.release_name }}
+          target_commitish: main
+          generate_release_notes: true
+          files: app/build/outputs/apk/debug/app-debug.apk
+          body: |
+            ## Calcify for Android
+
+            Download `app-debug.apk` from the Assets section below and install it on your Android device.
+
+            This is a debug build intended for testing. Android may ask you to allow installation from the app used to open the downloaded APK.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
