@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="assets/calcify-logo.svg" alt="Calcify logo" width="220" />
+</div>
+
 # Calcify
 
 ### Adaptive Arithmetic Speed & Accuracy Trainer
